@@ -1,16 +1,15 @@
-from .endpoint import Endpoint, api
+from .endpoint import QuerysetEndpoint, api
 from .exceptions import MissingRequiredFieldError
 from .resource_tagger import _ResourceTagger
 from .permissions_endpoint import _PermissionsEndpoint
-from .. import RequestFactory, ViewItem, PaginationItem
-from ...models.tag_item import TagItem
+from .. import ViewItem, PaginationItem
 import logging
 from contextlib import closing
 
 logger = logging.getLogger('tableau.endpoint.views')
 
 
-class Views(Endpoint):
+class Views(QuerysetEndpoint):
     def __init__(self, parent_srv):
         super(Views, self).__init__(parent_srv)
         self._resource_tagger = _ResourceTagger(parent_srv)

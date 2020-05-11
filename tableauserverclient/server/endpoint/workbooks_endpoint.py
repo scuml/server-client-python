@@ -1,7 +1,6 @@
-from .endpoint import Endpoint, api, parameter_added_in
+from .endpoint import QuerysetEndpoint, api, parameter_added_in
 from .exceptions import InternalServerError, MissingRequiredFieldError
 from .permissions_endpoint import _PermissionsEndpoint
-from .exceptions import MissingRequiredFieldError
 from .fileuploads_endpoint import Fileuploads
 from .resource_tagger import _ResourceTagger
 from .. import RequestFactory, WorkbookItem, ConnectionItem, ViewItem, PaginationItem
@@ -23,7 +22,7 @@ ALLOWED_FILE_EXTENSIONS = ['twb', 'twbx']
 logger = logging.getLogger('tableau.endpoint.workbooks')
 
 
-class Workbooks(Endpoint):
+class Workbooks(QuerysetEndpoint):
     def __init__(self, parent_srv):
         super(Workbooks, self).__init__(parent_srv)
         self._resource_tagger = _ResourceTagger(parent_srv)
@@ -39,8 +38,10 @@ class Workbooks(Endpoint):
         logger.info('Querying all workbooks on site')
         url = self.baseurl
         server_response = self.get_request(url, req_options)
-        pagination_item = PaginationItem.from_response(server_response.content, self.parent_srv.namespace)
-        all_workbook_items = WorkbookItem.from_response(server_response.content, self.parent_srv.namespace)
+        pagination_item = PaginationItem.from_response(
+            server_response.content, self.parent_srv.namespace)
+        all_workbook_items = WorkbookItem.from_response(
+            server_response.content, self.parent_srv.namespace)
         return all_workbook_items, pagination_item
 
     # Get 1 workbook

@@ -1,4 +1,4 @@
-from .endpoint import Endpoint, api
+from .endpoint import QuerysetEndpoint, api
 from .exceptions import MissingRequiredFieldError
 from .. import RequestFactory, UserItem, WorkbookItem, PaginationItem
 from ..pager import Pager
@@ -8,7 +8,7 @@ import copy
 logger = logging.getLogger('tableau.endpoint.users')
 
 
-class Users(Endpoint):
+class Users(QuerysetEndpoint):
     @property
     def baseurl(self):
         return "{0}/sites/{1}/users".format(self.parent_srv.baseurl, self.parent_srv.site_id)

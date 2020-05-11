@@ -1,13 +1,11 @@
-from .endpoint import Endpoint, api, parameter_added_in
+from .endpoint import QuerysetEndpoint, api, parameter_added_in
 from .exceptions import InternalServerError, MissingRequiredFieldError
-from .endpoint import api, parameter_added_in, Endpoint
 from .permissions_endpoint import _PermissionsEndpoint
-from .exceptions import MissingRequiredFieldError
 from .fileuploads_endpoint import Fileuploads
 from .resource_tagger import _ResourceTagger
 from .. import RequestFactory, DatasourceItem, PaginationItem, ConnectionItem
+from ..query import QuerySet
 from ...filesys_helpers import to_filename, make_download_path
-from ...models.tag_item import TagItem
 from ...models.job_item import JobItem
 import os
 import logging
@@ -23,7 +21,7 @@ ALLOWED_FILE_EXTENSIONS = ['tds', 'tdsx', 'tde', 'hyper']
 logger = logging.getLogger('tableau.endpoint.datasources')
 
 
-class Datasources(Endpoint):
+class Datasources(QuerysetEndpoint):
     def __init__(self, parent_srv):
         super(Datasources, self).__init__(parent_srv)
         self._resource_tagger = _ResourceTagger(parent_srv)
